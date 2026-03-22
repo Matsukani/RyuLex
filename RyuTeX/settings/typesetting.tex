@@ -1,0 +1,99 @@
+% typesetting.tex
+% =====================
+% Engine: LuaLaTeX + Japanese
+% =====================
+
+\usepackage{luatexja} % Japanese support
+
+% treat all Japanese chars uniformly}
+\ltjsetparameter{jacharrange={-2}} 
+
+% --- 禁則処理 ---
+\ltjsetparameter{prebreakpenalty={`ぁ,10000}}
+\ltjsetparameter{prebreakpenalty={`ぃ,10000}}
+\ltjsetparameter{prebreakpenalty={`ぅ,10000}}
+\ltjsetparameter{prebreakpenalty={`ぇ,10000}}
+\ltjsetparameter{prebreakpenalty={`ぉ,10000}}
+\ltjsetparameter{prebreakpenalty={`ゃ,10000}}
+\ltjsetparameter{prebreakpenalty={`ゅ,10000}}
+\ltjsetparameter{prebreakpenalty={`ょ,10000}}
+\ltjsetparameter{prebreakpenalty={`っ,10000}}
+\ltjsetparameter{prebreakpenalty={`ァ,10000}}
+\ltjsetparameter{prebreakpenalty={`ィ,10000}}
+\ltjsetparameter{prebreakpenalty={`ゥ,10000}}
+\ltjsetparameter{prebreakpenalty={`ェ,10000}}
+\ltjsetparameter{prebreakpenalty={`ォ,10000}}
+\ltjsetparameter{prebreakpenalty={`ャ,10000}}
+\ltjsetparameter{prebreakpenalty={`ュ,10000}}
+\ltjsetparameter{prebreakpenalty={`ョ,10000}}
+\ltjsetparameter{prebreakpenalty={`ッ,10000}}
+
+% --- punctuation ---
+\ltjsetparameter{prebreakpenalty={`、,10000}} % U+3001
+\ltjsetparameter{prebreakpenalty={`。,10000}} % U+3002
+\ltjsetparameter{prebreakpenalty={`，,10000}} % U+FF0C
+\ltjsetparameter{prebreakpenalty={`．,10000}} % U+FF0E
+
+% --- closing brackets ---
+\ltjsetparameter{prebreakpenalty={`）,10000}} % U+FF09
+\ltjsetparameter{prebreakpenalty={`〕,10000}} % U+3015
+\ltjsetparameter{prebreakpenalty={`］,10000}} % U+FF3D
+\ltjsetparameter{prebreakpenalty={`｝,10000}} % U+FF5D
+\ltjsetparameter{prebreakpenalty={`〉,10000}} % U+3009
+\ltjsetparameter{prebreakpenalty={`》,10000}} % U+300B
+\ltjsetparameter{prebreakpenalty={`」,10000}} % U+300D
+\ltjsetparameter{prebreakpenalty={`』,10000}} % U+300F
+\ltjsetparameter{prebreakpenalty={`】,10000}} % U+3011
+
+\ltjsetparameter{
+  kanjiskip  = 0pt plus 0.05em minus 0.03em,
+  xkanjiskip = 0.12em plus 0.06em minus 0.03em
+}
+\emergencystretch=2em
+
+
+\usepackage{luatexja-fontspec} % fontspec style interface
+% !TEX program = lualatex
+
+% ===================
+% Latin / Roman font
+% ===================
+\setmainfont[
+	Ligatures        = TeX,
+	Numbers          = OldStyle,
+	Scale            = MatchLowercase,
+	Kerning          = On
+]{TeX Gyre Pagella}
+
+% ==============
+% Japanese fonts
+% ==============
+\setmainjfont[
+	Renderer = HarfBuzz,
+	BoldFont = {Noto Serif CJK JP Bold},
+	YokoFeatures = {JFM=prop},
+	TateFeatures = {JFM=prop}
+]{Noto Serif CJK JP Regular}
+
+\newjfontfamily\EmbJpFont[
+	Renderer = HarfBuzz,
+	BoldFont = {Noto Sans CJK JP Bold},
+	YokoFeatures = {JFM=prop},
+	TateFeatures = {JFM=prop}
+]{Noto Sans CJK JP Regular}
+
+% =========
+% IPA font
+% =========
+\newfontfamily\ipafont[
+	Scale            = MatchLowercase,
+	Ligatures        = TeX,
+	Kerning          = On
+]{Charis SIL}
+
+% Define font for pitch variation diacritics
+\newfontfamily\pitchvar{DejaVu Serif}
+
+% Mathtools
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Pagella Math}

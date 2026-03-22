@@ -1,0 +1,38 @@
+% bib-config.tex
+
+% ===============================
+% ---- BiBiography Settings ----
+% ===============================
+
+% Biblatex + biber (LuaLaTeX-friendly)
+\usepackage[
+	backend=biber,
+	style=authoryear,
+	natbib=true,         % keeps \citep, \citet, etc.
+	sorting=nyt,         % name-year-title
+	sortlocale={ja_JP}     % Japanese collation in biber (ICU)
+	giveninits=false,   % do NOT abbreviate given names
+	dashed=false,       % do NOT replace repeated authors with dash
+	maxbibnames=99,     % print all author names in bibliography
+	maxcitenames=2      % (optional) keep citations short; set 99 if you want full in-text too
+]{biblatex}
+
+\addbibresource{main.bib}
+
+% If you want Author:Year (your natbib had a ":"-ish intent)
+\DeclareDelimFormat{nameyeardelim}{\addcolon\space}
+
+% If you want (A, 2020, 15) for postnotes:
+\DeclareDelimFormat{postnotedelim}{\addcomma\space}
+
+\DeclareNameAlias{default}{family-given}
+
+\DeclareDelimFormat{revsdnamepunct}{\addspace}
+
+% Article-like titles: Japanese -> 「...」, otherwise -> “...”
+\DeclareFieldFormat[article,incollection,inproceedings]{title}{%
+	\iffieldequalstr{langid}{japanese}
+		{「#1」}
+		{\mkbibquote{#1}}%
+}
+

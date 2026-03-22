@@ -1,0 +1,264 @@
+% d_commands.tex
+
+% =====================================
+% ---- Orthographic Commands & Others ----
+% =====================================
+
+% Commands for IPA font and IPA embedded in Japanese text
+\newcommand\ip[1]{{\ipafont #1}}
+\newcommand\ipe[1]{{\space\ipafont #1\space}} % % Embedded with japanese text at both side
+\newcommand\ipr[1]{{\ipafont #1\space}} % Embedded with japanese text at right side
+\newcommand\ipl[1]{{\space\ipafont #1}} % Embedded with japanese text at left side
+
+% Command for embedded Ryukyuan in Japanese
+%\newcommand\emb[1]{{\EmbJpFont\addfontfeatures{LetterSpace=1.0} #1}}
+\newcommand\emb[1]{{\EmbJpFont #1}}
+
+% Command for outputting roman number
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@類}
+\makeatother
+
+% Definition of space for wakachigaki 
+% NOTE: never use 全角スペース as such
+%\newcommand{\ws}{\nobreak\hskip0.75em plus 0.1em minus 0.08em\relax}
+\newcommand{\ws}{\space\kern0.35em}
+
+% Kerneling of 「゜」
+%\newcommand{\m}{\nobreak\hspace{-2pt}゜\hspace{-5pt plus 0.5pt minus 0.5pt}}
+\newcommand{\m}{\nobreak\kern-2pt゜\kern-5pt}
+
+\newcommand{\sms}{\kern0.05em\raisebox{-0.3ex}{\scalebox{0.7}{ス}}\kern0.05em}
+\newcommand{\smz}{\kern0.05em\raisebox{-0.3ex}{\scalebox{0.7}{ズ}}\kern0.05em}
+
+% Definition for the correct display of 「～」
+\newcommand{\ntilde}{\nobreak\hspace{1pt plus 0.2pt minus 0.2pt}～\hspace{0.6pt plus 0.1pt minus 0.1pt}}
+
+% Commands for pitch variation diacritics
+\newcommand{\josho}{\pitchvar{\hspace{0pt}⸢\hspace{0pt}}}
+\newcommand{\kako}{\pitchvar{\hspace{0pt}⸣\hspace{0pt}}}
+\newcommand{\heiban}{\ip{\hspace{0pt}\textbf{\nolinebreak ¯}\hspace{0pt}}}
+
+\DeclareRobustCommand{\tl}[1]{\nobreak\kern.02em\hbox{\ip{#1}}}
+
+% Command for ①②③... 
+% NOTE: used in MEANING(S) numbering
+\newcommand{\numbering}[1]{%
+  \ifcase#1\or ①\or ②\or ③\or ④\or ⑤\or ⑥\or ⑦\or ⑧\or ⑨\or ⑩\or ⑪\or ⑫\or ⑬\or ⑭\or ⑮\or ⑯\or ⑰\or ⑱\or ⑲\or ⑳\or ㉑\or ㉒\or ㉓\or ㉔\or ㉕\or ㉖\or ㉗\or ㉘\or ㉙\or ㉚\fi
+  \hspace{0.3em}%
+}
+
+% Command for letter heading
+% Principle: unbreakable vertical box with fixed height
+
+\makeatletter
+\newcommand{\LetterHead}[1]{%
+  \par\noindent
+
+  % Build an unbreakable box with *exact* spacing (tune these two):
+  \setbox0=\vbox{%
+    \vskip 1.0\baselineskip
+    \hbox to \linewidth{\hfil \Large\bfseries —\,#1\,—\hfil}%
+    \vskip 1.0\baselineskip
+  }%
+
+  % Decide remaining space (multicols column vs normal page)
+  \dimen0=\ht0 \advance\dimen0 by \dp0 % needed height
+
+  \ifdefined\@colroom
+    % Inside multicols: remaining space in current column is \@colroom
+    \ifdim\@colroom<\dimen0
+      \columnbreak
+    \fi
+  \else
+    % Normal single-column: remaining space on page
+    \dimen2=\dimexpr\pagegoal-\pagetotal\relax
+    \ifdim\dimen2<\dimen0
+      \pagebreak
+    \fi
+  \fi
+
+  % Place the box (unbreakable, predictable)
+  \nointerlineskip\box0\par
+}
+\makeatother
+
+% =====================================
+% ---- DICTIONARY ENTRY STRUCTURE ----
+% =====================================
+
+\usepackage{keyval}
+
+% New entry command
+% 1st param: Entry head
+% 2st param: Meanings block
+% 3st param: Entry tail
+\newcommand{\entry}[3]{%
+	\par\begingroup
+    \leavevmode
+	\hangindent=0.3cm
+	#1% 
+	%\hspace{0.2em plus 0.1em minus 0.05em}%
+	\kern0.08em%
+    \ignorespaces#2#3%
+    \par\endgroup
+}
+
+% Keyed Entry head
+\makeatletter
+
+% Slots for Entry head
+\newcommand{\ryu@head@kana}{} % Kana orthograpy
+\newcommand{\ryu@head@ipa}{} % IPA/Romaji orthograpghy
+\newcommand{\ryu@head@pos}{} % Part of Speech
+\newcommand{\ryu@head@cat}{} % Semantic Category 
+\newcommand{\ryu@head@acc}{} % Accent Class/information
+\newcommand{\ryu@head@rui}{} % Conjugation Class
+\newcommand{\ryu@head@para}{} % Conjugation Paradigm
+
+% Keys
+\define@key{ryuhead}{kana}{\def\ryu@head@kana{#1}}
+\define@key{ryuhead}{ipa}{\def\ryu@head@ipa{#1}}
+\define@key{ryuhead}{pos} {\def\ryu@head@pos{#1}}
+\define@key{ryuhead}{cat}{\def\ryu@head@cat{#1}}
+\define@key{ryuhead}{acc}{\def\ryu@head@acc{#1}}
+\define@key{ryuhead}{rui} {\def\ryu@head@rui{#1}}
+\define@key{ryuhead}{para} {\def\ryu@head@para{#1}}
+
+% Keyed Entry head command
+\newcommand{\headPrint}[1][]{%
+  % reset every time
+  \let\ryu@head@kana\@empty%
+  \let\ryu@head@ipa\@empty%
+  \let\ryu@head@pos\@empty%
+  \let\ryu@head@cat\@empty%
+  \let\ryu@head@acc\@empty%
+  \let\ryu@head@rui\@empty%
+  \let\ryu@head@para\@empty%
+  % parse keys if any
+  \setkeys{ryuhead}{#1}%
+  %
+  % Kana orthography + header markings
+  \ifx\ryu@head@kana\@empty\else%
+    \markboth{\ryu@head@kana}{\ryu@head@kana}%
+    %\textbf{\ryu@head@kana}%
+    {\EmbJpFont\bfseries \ryu@head@kana}%
+  \fi%
+  % IPA/Romaji orthography
+  \ifx\ryu@head@ipa\@empty\else%
+    \enspace{\ip{[\ryu@head@ipa]}}%
+  \fi%
+  % POS block (print as one unit)
+  \ifx\ryu@head@pos\@empty\else%
+    \kern-0.1em［\ryu@head@pos%
+    \ifx\ryu@head@rui\@empty\else\ip{\ryu@head@rui}\fi%
+    ］\kern-0.1em%
+  \fi%
+  % Accent class
+  \ifx\ryu@head@acc\@empty\else%
+    \kern-0.1em［\ryu@head@acc］\kern-0.1em%
+  \fi%
+  % Semantic category
+  \ifx\ryu@head@cat\@empty\else%
+    \kern-0.1em［\ryu@head@cat］\kern-0.1em%
+  \fi%
+  % Paradigm
+  \ifx\ryu@head@para\@empty\else%
+    \kern-0.1em［{\EmbJpFont \ryu@head@para}］\kern-0.1em%
+  \fi%  
+  }%
+\makeatother
+
+% Meaning(s) block
+\makeatletter
+\newcount\ryu@meaningcount
+\newcount\ryu@meaningindex
+
+% 2 passes required for the confitioning of numbering 
+% i.e. no numbering if only one meaning in meaning block
+\newcommand{\MeaningsBlock}[1]{%
+  \begingroup%
+    % pass 1: count
+    \ryu@meaningcount=0\relax%
+    \long\def\ryumeaning##1##2##3{%
+      \advance\ryu@meaningcount by 1\relax%
+    }%
+    #1%
+    %
+    % pass 2: print
+    \ryu@meaningindex=0\relax%
+    \long\def\ryumeaning##1##2##3{%
+      \ifnum\ryu@meaningcount>1\relax%
+        \advance\ryu@meaningindex by 1\relax%
+        \numbering{\the\ryu@meaningindex}%
+      \fi%
+      \MeaningPrint{##1}{##2}{##3}%
+    }%
+    \ignorespaces#1%
+  \endgroup%
+}
+\makeatother
+
+\makeatletter
+% Command for printing the meaning
+\newcommand{\MeaningPrint}[3]{%
+	\ifblank{#1}{}{#1。}% gloss (相当語・訳語)
+	\ifblank{#2}{}{#2。}% Explanation ()
+	\ifblank{#3}{}{#3}% Example Sentence
+}
+\makeatother
+
+% Entry Tail
+\makeatletter
+
+\newcommand{\ryu@tail@note}{}
+\newcommand{\ryu@tail@allo}{}
+\newcommand{\ryu@tail@syn}{}
+
+\define@key{ryutail}{note}{\def\ryu@tail@note{#1}}
+\define@key{ryutail}{allo}{\def\ryu@tail@allo{#1}}
+\define@key{ryutail}{syn} {\def\ryu@tail@syn{#1}}
+
+\newcommand{\tailPrint}[1][]{%
+  % reset every time
+  \let\ryu@tail@note\@empty%
+  \let\ryu@tail@allo\@empty%
+  \let\ryu@tail@syn\@empty%
+  %
+  % parse keys if any
+  \setkeys{ryutail}{#1}%
+  %
+  % output only if nonempty
+  \ifx\ryu@tail@note\@empty\else［備］\ryu@tail@note。\fi%
+  \ifx\ryu@tail@allo\@empty\else［同］\ryu@tail@allo。\fi%
+  \ifx\ryu@tail@syn \@empty\else［類］\ryu@tail@syn 。\fi%
+}
+
+\makeatother
+
+% Command for inline sentence example
+\newcommand{\inlineExample}[1]{#1。}
+
+% Command for sentence example
+% 1st param: Source language orthography
+% 2nd param: Target language (Japanese) translation 
+\newcommand{\reibun}[2]{\emb{#1}（#2）。}
+
+% Definition of reverse lookup structure
+% 1st para: Reading (読み)
+% 2nd para: Kanji Orthography (漢字表記)
+% 3rd para: Word-form (語形)
+
+% Structure command for reverse lookup
+\newcommand{\rentry}[3]{%
+  \par\begingroup
+  \leavevmode
+  \markboth{\unexpanded{#1}}{\unexpanded{#1}}%
+  \hangindent=1em
+  \noindent
+  \ifblank{#2}%
+    {#1\hspace{0.4em}}%
+    {#1【#2】\hspace{0.4em}}%
+  #3%
+  \par\endgroup
+}

@@ -1,0 +1,319 @@
+% !TEX program = lualatex
+\documentclass[lualatex,ja=standard,enablejfam=true,base=11pt]{bxjsbook}
+
+% ===============================
+% ===============================
+% ---------- SETTINGS ----------
+% ===============================
+% ===============================
+
+% ===================
+% Typesetting setup
+% ===================
+
+% Load the typesetting
+\input{settings/typesetting}
+
+% =================
+% ---- LAYOUT ----
+% =================
+
+\geometry{
+	paper=a4paper,
+	top=22mm,
+	bottom=22mm,
+	left=22mm,
+	right=22mm,
+    headsep=6mm,
+	footskip=10mm,
+	includehead,
+	includefoot
+}
+\setlength{\headheight}{19pt}
+\setlength{\columnsep}{6mm}
+\setlength{\columnseprule}{0pt}
+
+% ======================
+% ---- Bibliography ----
+% ======================
+
+% Load the typesetting
+\input{settings/bib-config}
+
+% Page style
+\AtBeginBibliography{\thispagestyle{plain}}
+
+% ===================
+% ---- PACKAGES ---- 
+% ===================
+
+% 色々
+\usepackage{etoolbox}
+
+% Header/footer customization
+\usepackage{fancyhdr} 
+
+% Title formatting and customization
+\usepackage{titlesec}
+
+% Package for ruby
+\usepackage{pxrubrica}
+
+% Draw Tree package
+\usepackage{tikz,tikz-qtree}
+\usetikzlibrary{trees} % this is to allow the fork right path
+\usetikzlibrary{fit,shapes}
+
+% Graphics, Figures and Tables related packages
+\usepackage{graphicx,wrapfig,caption}
+\usepackage{booktabs,hhline}
+\usepackage{makecell,multirow,multicol,arydshln} % Several lines in cell, multirow/col, dashed lines
+\usepackage{placeins}
+
+% Internal navigation
+\usepackage[hidelinks,unicode=true]{hyperref}
+\usepackage{bookmark}
+
+% Package for enumeration
+\usepackage[shortlabels]{enumitem}
+
+% Linguistics related Packages
+\usepackage{linguex} % Examples
+\renewcommand{\firstrefdash}{} % Suppress first '-' when referring to subexample
+
+% For conditional formatting
+\usepackage{xifthen}
+
+% Use of color
+\usepackage{color}
+
+% Check layout if needed
+%\usepackage{layout}
+
+% ===========================
+% ---- TITLE FORMATTING ---- 
+% ===========================
+
+% Format Chapter titles
+\titleformat{\chapter}[block]{\large\bfseries\filcenter}{章}{0pt}{}
+\titlespacing*{\chapter}{0pt}{*0}{*6}
+
+% Removing the chapter for section
+\renewcommand{\thesection}{\arabic{section}.}
+
+% Format section titles
+\titleformat{\section}[block]{\normalfont\normalsize\bfseries}{\normalfont\thesection}{4pt}{}
+\titlespacing{\section}{0pt}{10pt plus 3pt minus 1pt}{*0}
+
+% Format subsection titles
+\titleformat{\subsection}[block]{\normalfont\normalsize\bfseries}{\normalfont\thesubsection}{4pt}{}
+
+% Table of contents print level
+\setcounter{tocdepth}{1}
+
+% Level of numbering
+\setcounter{secnumdepth}{4}
+
+% Caption formatting
+\DeclareCaptionFormat{custom}{#1 #3}
+\captionsetup{within=none,format=custom}
+
+% Indent first paragraph
+\usepackage{indentfirst}
+
+% ===================================
+% ---- HEADER/FOOTER FORMATTING ---- 
+% ===================================
+
+% Compute textwidth for header and footer settings
+\usepackage{calc}
+\newlength{\DictBlockWidth}
+
+\newcommand{\SetDictBlockWidth}{%
+	\setlength{\DictBlockWidth}{\textwidth}
+}
+
+% Redefine the plain style
+\fancypagestyle{plain}{
+
+    % Adjust size of header and footer to the size of \textwidth
+    \fancyheadoffset[LE,RO]{\DictBlockWidth}
+    \fancyfootoffset[LE,RO]{\DictBlockWidth}
+
+    \fancyhf{} % Clear header and footer
+    \fancyfoot[LE,RO]{\textbf{\small{\textsf{\thepage}}}} 
+    \renewcommand{\headrulewidth}{0pt} % no rule under the header
+}
+
+% Definition of style for dictionary contents
+\fancypagestyle{dictionary}{
+
+    % Adjust size of header and footer to the size of \textwidth
+    \fancyheadoffset[LE,RO]{\DictBlockWidth}
+    \fancyfootoffset[LE,RO]{\DictBlockWidth}
+
+    \fancyhf{} % Flush header and footer
+    \fancyhead[LE]{\large \textsf{\rightmark}} % Even page header
+    \fancyhead[RO]{\large \textsf{\leftmark}} % Odd page header
+    \renewcommand{\headrulewidth}{1pt} % Rule under header
+    
+    \fancyfoot[LE,RO]{\textbf{\small{\textsf{\thepage}}}} % Page printed in Footer
+    \renewcommand{\footrulewidth}{0pt} % Rule under footer
+}
+
+% ==================================================
+% ---- DICTIONARY/ORTHOGRAPHY RELATED COMMANDS ----
+% ==================================================
+
+% Load the dictionary commands
+%\input{settings/d_commands_old}
+\input{settings/d_commands}
+
+% =========================
+% ---- MISCELLANEOUS ----
+% =========================
+
+% Shortcut for superscript text
+\let\sp\textsuperscript
+
+% Footnote numeration system from default *1, *2, *3 to 1, 2 ,3
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+% Float-only page layout (概説 tables)
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpsep}{8pt}
+\setlength{\@fpbot}{0pt}
+\makeatother
+
+% ===========================
+% ===========================
+% -------- CONTENTS --------
+% ===========================
+% ===========================
+
+% ===========================
+% ---- TITLE AND AUTHOR ----
+% ===========================
+
+\title{RyuTeX：琉和辞典用のLaTeXテンプレート\\\small{（2026年03月22日）}}
+\author{セリック・ケナン}
+\date{}
+
+
+% =============================
+% ------ FRONT MATTER ---------
+% =============================
+
+\begin{document}
+\maketitle      
+\frontmatter
+
+\pagestyle{plain}
+
+% Table of contents
+\begingroup
+  \renewcommand{\baselinestretch}{0.95}\selectfont
+  \tableofcontents\thispagestyle{empty}
+\endgroup
+
+% =============================
+% ------ MAIN MATTER ----------
+% =============================
+
+\pagestyle{empty} % Suppress header and footer
+\mainmatter
+\addcontentsline{toc}{part}{解説}\pagestyle{empty}\thispagestyle{empty}
+\part*{解説}
+
+% Revert to plain style
+\pagestyle{plain}
+
+% Include the explanation and the legend
+\include{chapters/1_gaisetu}
+\include{chapters/2_bibliography}
+\include{chapters/3_hanrei}
+
+%\clearpage
+
+% =====================
+% ----- DICTIONARY ----
+% =====================
+
+% Add title of dictionary part (if necessary)
+\addcontentsline{toc}{part}{本文}\pagestyle{empty}\thispagestyle{empty}
+\part*{本文}
+ 
+\begingroup
+  % Include the dictionary's contents
+  \cleardoublepage % or \clearpage in oneside 
+  \pagestyle{dictionary}
+  \phantomsection
+  \addcontentsline{toc}{chapter}{琉球・日本語}
+  \SetDictBlockWidth
+
+  % Suppress paragraph indent for the entries
+  \setlength{\parindent}{0pt}
+  
+  % Set the size of paragraph skip between entries
+  \setlength{\parskip}{6pt}
+
+  % Adjustment of between-line space
+  %\renewcommand{\baselineskip}{0.9}
+
+  % Switch to multi-column mode
+  % starred multicols for not balancing the columns 
+  \begin{multicols*}{2}
+    \input{data/hateruma_sample_260321} % new settings    
+  \end{multicols*}
+  \clearpage
+\endgroup
+
+% =========================
+% ---- REVERSE LOOKUP ----
+% =========================
+%\pagestyle{empty}
+%\cleardoublepage 
+
+% Add title of dictionary part (if necessary)
+\addcontentsline{toc}{part}{日本語引き}\pagestyle{empty}\thispagestyle{empty}
+\part*{日本語引き}
+
+\begingroup
+  % Typesetting parameters for dictionary part
+  \ltjsetparameter{
+    kanjiskip  = 0pt plus 0.02em minus 0.08em,
+    xkanjiskip = 0.10em plus 0.03em minus 0.08em
+  }
+  \pagestyle{dictionary}
+  \phantomsection
+  \addcontentsline{toc}{chapter}{日本語・琉球}
+  \SetDictBlockWidth
+  
+  % Suppress paragraph indent for the entries
+  \setlength{\parindent}{0pt}
+  
+  % Set the size of paragraph skip
+  \setlength{\parskip}{0pt}
+  
+  \begin{multicols*}{2}
+   \input{data/hateruma_sample_reverse_260321}
+  \end{multicols*}
+  \clearpage
+\endgroup
+
+% =================================
+% ---------- BACK MATTER ---------
+% =================================
+
+\pagestyle{empty} % switch to 'plain' for having page numbers on blank pages as well
+
+\include{chapters/4_atogaki}
+\include{chapters/5_shaji}
+
+\clearpage
+\ifodd\value{page}\else\null\newpage\fi % for 奥付 on the last odd page
+\include{chapters/6_okuzuke}
+
+\end{document}
+
