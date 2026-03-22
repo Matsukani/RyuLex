@@ -19,7 +19,6 @@ RyuLex is organized as a modular pipeline:
 Questionnaire → RyuTab → output layer →
     ├── RyuTeX (typeset dictionary)
     └── 日琉言宝 (online database)
-
 ```
 
 Each component can be used independently, but together they form a complete lexicographic workflow.
