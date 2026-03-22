@@ -15,9 +15,14 @@ The framework is built around a small set of interoperable components.
 ## Overview
 
 RyuLex is organized as a modular pipeline:
-```Questionnaire → RyuTab → conversion tools → RyuTeX → publication```
+```
+Questionnaire → RyuTab → output layer →
+    ├── RyuTeX (typeset dictionary)
+    └── 日琉言宝 (online database)
 
-Each component can be used independently, but together they provide a complete lexicographic workflow.
+```
+
+Each component can be used independently, but together they form a complete lexicographic workflow.
 
 ---
 
@@ -47,11 +52,21 @@ The questionnaire facilitates the systematic collection of lexical and usage dat
 
 RyuTab enables consistent data curation and compatibility with downstream tools.
 
+RyuTab is also the data model implemented in the online platform **『日琉言宝』**
+(Lexical Treasures of the Japonic Languages, https://kikigengo.ninjal.ac.jp/nrdb/),
+where it is used for data registration and online publication.
+
+This allows RyuTab data to be published not only as typeset dictionaries (via RyuTeX),
+but also as structured, searchable online lexical databases.
+
+(The conversion tools for the platform are implemented within 日琉言宝 and are not part of RyuLex.)
+
 ---
 
 ### 3. tools
 
 Tools for transforming RyuTab data into publication formats.
+Conversion pipelines for online publication (e.g. 日琉言宝) are implemented separately and are not included in this repository.
 
 #### tab2tex.py
 
@@ -78,6 +93,8 @@ These tools bridge the gap between structured data and typeset output.
 - fully automated integration with RyuTab data  
 
 RyuTeX handles the typesetting and publication stage.
+
+RyuTeX represents one possible publication path within the RyuLex framework, focused on print-oriented output.
 
 ---
 
