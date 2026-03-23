@@ -65,7 +65,6 @@ but also as structured, searchable online lexical databases.
 ### 3. tools
 
 Tools for transforming RyuTab data into publication formats.
-Conversion pipelines for online publication (e.g. 日琉言宝) are implemented separately and are not included in this repository.
 
 #### tab2tex.py
 
@@ -116,6 +115,10 @@ RyuLex is based on the following principles:
 - **Reproducibility**  
   outputs are generated automatically from structured data
 
+- **Extensibility**  
+  The framework is designed to be compatible with **UniCog**, a cognate linking framework for Ryukyuan languages,  
+  allowing lexical data from independent datasets to be connected and integrated for comparative analysis.
+
 ---
 
 ## Scope
@@ -130,7 +133,7 @@ However, the framework can be adapted to other Japanese dialect lexicographic pr
 
 ---
 
-## Philosophy
+## Principles
 
 RyuLex is conceived as a set of interoperable components centered on a shared data model
 and adopts a deliberately constrained design.
