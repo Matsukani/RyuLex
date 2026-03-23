@@ -57,13 +57,17 @@ https://researchmap.jp/miyako
 │ ├── 5_shaji.tex # 謝辞
 │ └── 6_okuzuke.tex # 奥付
 │
-└── data/
+├── data/
 │ ├── hateruma_sample_260321.tex
 │ │   # sample data of Ryukyuan-Japanese entries
 │ │   # (output by tab2tex.py)
 │ └── hateruma_sample_reverse_260321.tex
 │      # sample data of Japanese-Ryukyuan reverse lookup
 │      # (output by tab2tex.py)
+│
+└── example_output/
+  └── RyuTex_example.pdf
+      # PDF output based on chapters and data
 ```
 
 

@@ -183,4 +183,4 @@ If you use this script, citation or acknowledgement is appreciated but not requi
 ### Suggested citation
 
 Celik, Kenan (2026). *tab2tex.py: RyuTab to RyuTeX converter*.  
-Version 1.0. https://github.com/USERNAME/REPOSITORY
+Version 1.0. https://github.com/Matsukani/RyuLex/tools/tab2tex/
